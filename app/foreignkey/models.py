@@ -17,3 +17,16 @@ class Car(models.Model):
 
     def __str__(self):
         return self.name
+
+
+class FCUser(models.Model):
+    name = models.CharField(max_length=30)
+    instructor = models.ForeignKey(
+        'self',
+        blank=True,
+        null=True,
+        on_delete=models.SET_NULL,
+    )
+
+    def __str__(self):
+        return self.name
