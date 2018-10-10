@@ -12,4 +12,6 @@ class FacebookUser(models.Model):
     )
 
     def __str__(self):
-        return self.name
+        friend_list = self.friends.all()
+        friend_list_str = ', '.join([friend.name for friend in friend_list])
+        return f'{self.name} (친구: {friend_list_str})'
