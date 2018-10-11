@@ -112,6 +112,20 @@ class TwitterUser(models.Model):
         # Relation인스턴스와 생성여부를 반환
         return relation
 
+    @property
+    def follower_relations(self):
+        """
+        :return: 나를 follow하는 Relation QuerySet
+        """
+        return self.to_user_relations.filter(relation_type='f')
+
+    @property
+    def followee_relations(self):
+        """
+        :return: 내가 follow하는 Relation QuerySet
+        """
+        return self.from_user_relations.filter()
+
 
 class Relation(models.Model):
     CHOICE_RELATION_TYPE = (
@@ -135,3 +149,8 @@ class Relation(models.Model):
         max_length=1,
     )
     created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        unique_together = (
+            ('from_user', 'to_user'),
+        )
