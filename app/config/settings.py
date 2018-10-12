@@ -31,11 +31,12 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    'abc_other',
+    'abstract_base_classes',
     'fields',
     'foreignkey',
     'many_to_many',
     'one_to_one',
-    'abstract_base_classes',
 
     'django.contrib.admin',
     'django.contrib.auth',
