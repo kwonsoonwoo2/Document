@@ -4,7 +4,7 @@ from django.db import models
 class User1Manager(models.Manager):
     def normal_users(self):
         # super().get_queryset()
-        #   상위 클래스에서 정의한 '기본적으로' 돌려줄 QuerySet
+        #  상위 클래스에서 정의한 '기본적으로' 돌려줄 QuerySet
         return super().get_queryset().filter(is_admin=False)
 
     def admin_users(self):
@@ -38,14 +38,35 @@ class AdminUserManager(models.Manager):
         return super().get_queryset().filter(is_admin=True)
 
 
-class NormalUser(User1):
+class UtilMixin(models.Model):
+    class Meta:
+        abstract = True
+
+    @classmethod
+    def show_items(cls):
+        print(f'- Model({cls.__name__}) items -')
+        for item in cls._default_manager.all():
+            print(item)
+
+    def set_name(self, new_name):
+        ori_name = self.name
+        self.name = new_name
+        self.save()
+        print('{class_name} instance name change ({ori}, {new})'.format(
+            class_name=self.__class__.__name__,
+            ori=ori_name,
+            new=new_name
+        ))
+
+
+class NormalUser(UtilMixin, User1):
     objects = NormalUserManager()
 
     class Meta:
         proxy = True
 
 
-class Admin(User1):
+class Admin(UtilMixin, User1):
     objects = AdminUserManager()
 
     class Meta:
